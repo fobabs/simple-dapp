@@ -1,46 +1,61 @@
 const MoodContractAddress = "0x90e4ee69E44701a234704C8574d882CFC3Ec0cE5";
 const MoodContractABI = [
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "string",
-        "name": "_mood",
-        "type": "string"
-      }
+        internalType: "string",
+        name: "_mood",
+        type: "string",
+      },
     ],
-    "name": "setMood",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "setMood",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "getMood",
-    "outputs": [
+    inputs: [],
+    name: "getMood",
+    outputs: [
       {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
-]
-let MoodContract;
-let signer;
+    stateMutability: "view",
+    type: "function",
+  },
+];
 
 const provider = new ethers.providers.Web3Provider(window.ethereum, "goerli");
-provider.send("eth_requestAccounts", []).then(() => {
-  provider.listAccounts().then((accounts) => {
-    signer = provider.getSigner(accounts[0]);
-    MoodContract = new ethers.Contract(
-      MoodContractAddress,
-      MoodContractABI,
-      signer
-    );
-  });
-});
+
+let MoodContract;
+// let signer;
+
+// provider.send("eth_requestAccounts", []).then(() => {
+//   provider.listAccounts().then((accounts) => {
+//     signer = provider.getSigner(accounts[0]);
+//     MoodContract = new ethers.Contract(
+//       MoodContractAddress,
+//       MoodContractABI,
+//       signer
+//     );
+//   });
+// });
+
+async function web3Provider() {
+  await provider.send("eth_requestAccounts", []);
+  const accounts = await provider.listAccounts();
+  const signer = provider.getSigner(accounts[0]);
+  MoodContract = new ethers.Contract(
+    MoodContractAddress,
+    MoodContractABI,
+    signer
+  );
+}
+
+web3Provider();
 
 async function getMood() {
   const getMoodPromise = MoodContract.getMood();
