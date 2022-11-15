@@ -58,13 +58,11 @@ async function web3Provider() {
 web3Provider();
 
 async function getMood() {
-  const getMoodPromise = MoodContract.getMood();
-  const Mood = await getMoodPromise;
+  const Mood = await MoodContract.getMood();
   console.log(Mood);
 }
 
 async function setMood() {
   const mood = document.getElementById("mood").value;
-  const setMoodPromise = MoodContract.setMood(mood);
-  await setMoodPromise;
+  await MoodContract.setMood(mood);
 }
